@@ -159,6 +159,10 @@ Phishing-Website-Detection-System/
 ├── Phishing website detection system.ipynb
 └── word2vec.ipynb
 ```
+---
+
+## 📸 Screenshots
+
 
 
 
