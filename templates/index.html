@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>PhishGuard | URL Threat Analyzer</title>
+
+<style>
+
+:root {
+    --bg: #06101d;
+    --panel: #0c1b2c;
+    --panel2: #102338;
+    --border: #213c58;
+    --text: #edf5ff;
+    --muted: #8fa8c0;
+    --accent: #58a6ff;
+    --green: #43d17a;
+    --red: #ff6574;
+    --amber: #f3bd4b;
+    --cyan: #55d6e8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #163758 0,
+            #07121f 45%,
+            #050c15 100%
+        );
+
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin: auto;
+}
+
+/* HEADER */
+
+header {
+    padding: 22px 0;
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: 850;
+}
+
+.brand span {
+    color: var(--accent);
+}
+
+.status {
+    border: 1px solid #284963;
+    color: #9db9d3;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+
+/* HERO */
+
+.hero {
+    text-align: center;
+    padding: 64px 0 30px;
+}
+
+.eyebrow {
+    display: inline-block;
+
+    color: #8fc6ff;
+
+    background:
+        rgba(88,166,255,.08);
+
+    border:
+        1px solid rgba(88,166,255,.24);
+
+    padding: 7px 13px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 6vw, 62px);
+    line-height: 1.04;
+    margin: 17px 0 15px;
+    letter-spacing: -1.8px;
+}
+
+.hero h1 span {
+    color: var(--accent);
+}
+
+.hero p {
+    color: var(--muted);
+    max-width: 700px;
+    margin: auto;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+/* SCANNER */
+
+.scanner {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14,31,49,.97),
+            rgba(9,23,37,.97)
+        );
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 24px 90px rgba(0,0,0,.28);
+}
+
+label {
+    display: block;
+    color: #b9ccdd;
+    font-size: 12px;
+    margin-bottom: 9px;
+    font-weight: 750;
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+}
+
+input {
+    width: 100%;
+    flex: 1;
+
+    background: #06101d;
+    color: #fff;
+
+    border:
+        1px solid #2a4965;
+
+    border-radius: 11px;
+
+    padding: 16px;
+
+    outline: 0;
+
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(88,166,255,.1);
+}
+
+button {
+    border: 0;
+    border-radius: 11px;
+
+    padding: 0 24px;
+
+    background: #238636;
+    color: #fff;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    min-width: 150px;
+}
+
+button:hover {
+    background: #2ea043;
+}
+
+.error {
+    margin-top: 13px;
+
+    background: #35151a;
+
+    border:
+        1px solid #74323b;
+
+    color: #ff9da7;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+}
+
+/* RESULT */
+
+.result {
+    margin: 22px 0 0;
+
+    background:
+        rgba(12,27,44,.96);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 20px;
+
+    padding: 27px;
+}
+
+.result.bad {
+    border-color: #78323d;
+}
+
+.result.good {
+    border-color: #24633a;
+}
+
+.verdict {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    gap: 20px;
+}
+
+.verdict h2 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.bad-text {
+    color: var(--red);
+}
+
+.good-text {
+    color: var(--green);
+}
+
+.sub {
+    color: var(--muted);
+    margin-top: 7px;
+    font-size: 12px;
+}
+
+.confidence {
+    text-align: right;
+}
+
+.confidence small,
+.metric small {
+
+    display: block;
+
+    color: #70869c;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    font-weight: 800;
+}
+
+.confidence strong {
+    font-size: 29px;
+}
+
+/* URL */
+
+.url {
+    margin: 20px 0;
+
+    padding: 14px;
+
+    background: #06101d;
+
+    border:
+        1px solid #182f46;
+
+    border-radius: 11px;
+
+    color: #b2c8db;
+
+    word-break: break-all;
+
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+.url-actions {
+    display: flex;
+    gap: 8px;
+
+    margin-top: -12px;
+    margin-bottom: 20px;
+}
+
+.small-btn {
+    min-width: auto;
+
+    padding: 8px 12px;
+
+    background: #142a40;
+
+    border:
+        1px solid #294963;
+
+    font-size: 11px;
+}
+
+.small-btn:hover {
+    background: #1b3955;
+}
+
+/* METRICS */
+
+.metrics {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 11px;
+}
+
+.metric {
+    background: var(--panel2);
+
+    padding: 16px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.045);
+}
+
+.metric strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 16px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.risk-high {
+    color: var(--red);
+}
+
+.risk-medium {
+    color: var(--amber);
+}
+
+.risk-low {
+    color: var(--green);
+}
+
+/* SCORE */
+
+.score-box {
+
+    margin-top: 20px;
+
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(88,166,255,.07),
+            rgba(85,214,232,.035)
+        );
+
+    border:
+        1px solid
+        rgba(88,166,255,.15);
+
+    border-radius: 13px;
+}
+
+.score-head {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.score-head span {
+
+    font-size: 11px;
+
+    color: #a6bfd6;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+}
+
+.score-number {
+
+    font-size: 18px;
+
+    font-weight: 850;
+}
+
+.bar {
+
+    height: 9px;
+
+    background: #07111f;
+
+    border-radius: 999px;
+
+    overflow: hidden;
+
+    border:
+        1px solid #1c3349;
+}
+
+.fill {
+
+    height: 100%;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--amber),
+            var(--red)
+        );
+
+    transition:
+        width .4s ease;
+}
+
+.score-note {
+
+    color: #70879d;
+
+    font-size: 10px;
+
+    margin-top: 8px;
+}
+
+/* SIGNALS */
+
+.section {
+    margin-top: 24px;
+}
+
+.section-title {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+.section h3 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.section-title span {
+
+    font-size: 10px;
+
+    color: #6f879e;
+}
+
+.signal {
+
+    display: flex;
+
+    gap: 12px;
+
+    align-items:
+        flex-start;
+
+    padding: 13px;
+
+    background: var(--panel2);
+
+    border-radius: 10px;
+
+    margin-bottom: 8px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.035);
+}
+
+.signal-icon {
+    color: var(--amber);
+    font-weight: 900;
+}
+
+.signal strong {
+
+    display: block;
+
+    font-size: 13px;
+}
+
+.signal span {
+
+    color: #7890a8;
+
+    font-size: 11px;
+
+    display: block;
+
+    margin-top: 3px;
+}
+
+.empty {
+
+    color: #7fd398;
+
+    background:
+        rgba(63,185,80,.06);
+
+    border:
+        1px solid
+        rgba(63,185,80,.16);
+
+    padding: 13px;
+
+    border-radius: 10px;
+}
+
+/* RECOMMENDATION */
+
+.recommend {
+
+    margin-top: 22px;
+
+    padding: 17px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(88,166,255,.055);
+
+    border:
+        1px solid
+        rgba(88,166,255,.17);
+}
+
+.recommend-title {
+
+    font-size: 12px;
+
+    font-weight: 850;
+
+    color: #bcdcff;
+
+    margin-bottom: 6px;
+}
+
+.recommend p {
+
+    margin: 0;
+
+    color: #91a9bf;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+/* HISTORY */
+
+.history {
+
+    margin: 28px 0 0;
+
+    background:
+        rgba(12,27,44,.8);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    padding: 21px;
+}
+
+.history-head {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+.history-head h3 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.clear {
+
+    min-width: auto;
+
+    padding: 7px 11px;
+
+    background: transparent;
+
+    border:
+        1px solid #29445e;
+
+    color: #9ab2c8;
+
+    font-size: 10px;
+}
+
+.clear:hover {
+    background: #14283c;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.history table {
+
+    width: 100%;
+
+    border-collapse:
+        collapse;
+
+    font-size: 11px;
+}
+
+.history th {
+
+    text-align: left;
+
+    color: #637d94;
+
+    font-size: 9px;
+
+    letter-spacing: .8px;
+
+    padding: 9px;
+
+    border-bottom:
+        1px solid #1d344b;
+}
+
+.history td {
+
+    padding: 11px 9px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.045);
+
+    color: #a8bed2;
+}
+
+.history tr:last-child td {
+    border-bottom: 0;
+}
+
+.url-cell {
+
+    max-width: 370px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #d7e6f4 !important;
+}
+
+.pill {
+
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+.pill.bad {
+
+    color: #ff9ba5;
+
+    background:
+        rgba(255,101,116,.09);
+}
+
+.pill.good {
+
+    color: #7ee59e;
+
+    background:
+        rgba(67,209,122,.08);
+}
+
+.pill.warn {
+
+    color: #ffd27b;
+
+    background:
+        rgba(243,189,75,.08);
+}
+
+/* BOTTOM INFO */
+
+.info-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 13px;
+
+    margin:
+        25px 0 55px;
+}
+
+.info {
+
+    padding: 19px;
+
+    background:
+        rgba(12,27,44,.65);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+}
+
+.info b {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 12px;
+}
+
+.info p {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    margin: 0;
+}
+
+.info strong {
+    color: #8fc6ff;
+}
+
+.footer {
+
+    text-align: center;
+
+    color: #5f7489;
+
+    padding:
+        0 0 32px;
+
+    font-size: 11px;
+}
+
+/* MOBILE */
+
+@media(max-width:760px) {
+
+    .input-row,
+    .verdict {
+        flex-direction: column;
+    }
+
+    .input-row button {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .metrics,
+    .info-grid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .confidence {
+        text-align: left;
+    }
+}
+
+@media(max-width:520px) {
+
+    .metrics,
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .status {
+        display: none;
+    }
+
+    .hero {
+        padding-top: 45px;
+    }
+
+    .hero h1 {
+        letter-spacing: -1px;
+    }
+
+    .scanner,
+    .result {
+        padding: 18px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="container nav">
+
+<div class="brand">
+🛡 <span>Phish</span>Guard
+</div>
+
+<div class="status">
+ML + URL SECURITY ANALYSIS
+</div>
+
+</div>
+
+</header>
+
+
+<main class="container">
+
+
+<section class="hero">
+
+<div class="eyebrow">
+Phishing Detection System
+</div>
+
+<h1>
+Analyze a URL.
+<span>Spot the threat.</span>
+</h1>
+
+<p>
+Machine-learning classification combined with explainable
+URL-level security checks to help identify suspicious websites.
+</p>
+
+</section>
+
+
+<section class="scanner">
+
+<form method="POST">
+
+<label for="url">
+Website URL
+</label>
+
+<div class="input-row">
+
+<input
+id="url"
+name="url"
+value="{{ submitted_url }}"
+placeholder="https://example.com/login"
+autocomplete="off"
+required
+>
+
+<button type="submit">
+Analyze URL →
+</button>
+
+</div>
+
+</form>
+
+
+{% if error %}
+
+<div class="error">
+{{ error }}
+</div>
+
+{% endif %}
+
+</section>
+
+
+{% if result %}
+
+<section class="result
+{% if result.prediction == 'bad' %}
+bad
+{% else %}
+good
+{% endif %}
+">
+
+
+<div class="verdict">
+
+<div>
+
+{% if result.prediction == 'bad' %}
+
+<h2 class="bad-text">
+⚠ Phishing Detected
+</h2>
+
+<div class="sub">
+The trained classifier flagged this URL as suspicious.
+</div>
+
+{% else %}
+
+<h2 class="good-text">
+✓ Likely Legitimate
+</h2>
+
+<div class="sub">
+The trained classifier classified this URL as legitimate.
+</div>
+
+{% endif %}
+
+</div>
+
+
+{% if result.confidence is not none %}
+
+<div class="confidence">
+
+<small>
+MODEL CONFIDENCE
+</small>
+
+<strong>
+{{ result.confidence }}%
+</strong>
+
+</div>
+
+{% endif %}
+
+</div>
+
+
+<div class="url">
+{{ result.url }}
+</div>
+
+
+<div class="url-actions">
+
+<button
+class="small-btn"
+type="button"
+onclick="copyUrl()"
+>
+Copy URL
+</button>
+
+<button
+class="small-btn"
+type="button"
+onclick="newScan()"
+>
+New Scan
+</button>
+
+</div>
+
+
+<div class="metrics">
+
+
+<div class="metric">
+
+<small>
+HOSTNAME
+</small>
+
+<strong title="{{ result.hostname }}">
+{{ result.hostname }}
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+URL LENGTH
+</small>
+
+<strong>
+{{ result.length }} chars
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+RISK LEVEL
+</small>
+
+<strong class="risk-{{ result.risk_class }}">
+{{ result.risk_level }}
+</strong>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+SCAN TIME
+</small>
+
+<strong>
+{{ result.timestamp }}
+</strong>
+
+</div>
+
+
+</div>
+
+
+<div class="score-box">
+
+<div class="score-head">
+
+<span>
+SECURITY SIGNAL SCORE
+</span>
+
+<span class="score-number">
+{{ result.signal_score }}/100
+</span>
+
+</div>
+
+
+<div class="bar">
+
+<div
+class="fill"
+style="width:{{ result.signal_score }}%"
+></div>
+
+</div>
+
+
+<div class="score-note">
+
+Heuristic score based on URL-level warning signals;
+it is not a calibrated probability of maliciousness.
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+
+<h3>
+Explainable URL Checks
+</h3>
+
+<span>
+
+{{ result.signals|length }}
+
+signal{{ '' if result.signals|length == 1 else 's' }}
+
+detected
+
+</span>
+
+</div>
+
+
+{% if result.signals %}
+
+{% for signal in result.signals %}
+
+<div class="signal">
+
+<div class="signal-icon">
+⚠
+</div>
+
+<div>
+
+<strong>
+{{ signal[0] }}
+</strong>
+
+<span>
+{{ signal[1] }}
+</span>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+
+{% else %}
+
+<div class="empty">
+
+✓ No obvious URL-level warning signals were detected.
+
+</div>
+
+{% endif %}
+
+</div>
+
+
+<div class="recommend">
+
+<div class="recommend-title">
+🛡 Recommended Action
+</div>
+
+<p>
+{{ result.recommendation }}
+</p>
+
+</div>
+
+
+</section>
+
+{% endif %}
+
+
+{% if history %}
+
+<section class="history">
+
+<div class="history-head">
+
+<h3>
+Recent Scans
+</h3>
+
+<form
+method="POST"
+action="/clear-history"
+>
+
+<button
+class="clear"
+type="submit"
+>
+Clear history
+</button>
+
+</form>
+
+</div>
+
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>URL</th>
+
+<th>VERDICT</th>
+
+<th>CONFIDENCE</th>
+
+<th>RISK</th>
+
+<th>TIME</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% for item in history %}
+
+<tr>
+
+<td
+class="url-cell"
+title="{{ item.url }}"
+>
+{{ item.url }}
+</td>
+
+
+<td>
+
+<span
+class="pill
+{% if item.bad %}
+bad
+{% else %}
+good
+{% endif %}"
+>
+
+{{ item.verdict }}
+
+</span>
+
+</td>
+
+
+<td>
+
+{% if item.confidence is not none %}
+
+{{ item.confidence }}%
+
+{% else %}
+
+—
+
+{% endif %}
+
+</td>
+
+
+<td>
+
+<span
+class="pill
+{% if item.risk == 'High' %}
+bad
+{% elif item.risk == 'Medium' %}
+warn
+{% else %}
+good
+{% endif %}"
+>
+
+{{ item.risk }}
+
+</span>
+
+</td>
+
+
+<td>
+{{ item.time }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+{% endif %}
+
+
+<section class="info-grid">
+
+
+<div class="info">
+
+<b>
+Model Engine
+</b>
+
+<p>
+
+Existing
+<strong>Logistic Regression</strong>
+classifier with CountVectorizer.
+
+</p>
+
+</div>
+
+
+<div class="info">
+
+<b>
+Training Data
+</b>
+
+<p>
+
+Trained on
+<strong>549K+ labeled URLs</strong>
+from the project dataset.
+
+</p>
+
+</div>
+
+
+<div class="info">
+
+<b>
+Analysis Mode
+</b>
+
+<p>
+
+Local, real-time
+<strong>URL analysis</strong>
+with explainable security signals.
+
+</p>
+
+</div>
+
+
+</section>
+
+
+</main>
+
+
+<footer class="footer">
+
+PhishGuard · Educational cybersecurity project
+· ML + explainable URL analysis
+
+</footer>
+
+
+<script>
+
+function copyUrl() {
+
+    const el =
+        document.querySelector(".url");
+
+    if (!el) return;
+
+    navigator.clipboard
+        .writeText(el.innerText)
+        .then(() => {
+
+            const buttons =
+                document.querySelectorAll(".small-btn");
+
+            const button = buttons[0];
+
+            const oldText =
+                button.innerText;
+
+            button.innerText =
+                "Copied ✓";
+
+            setTimeout(
+                () => {
+                    button.innerText =
+                        oldText;
+                },
+                1200
+            );
+
+        })
+        .catch(() => {});
+
+}
+
+
+function newScan() {
+
+    const input =
+        document.getElementById("url");
+
+    if (input) {
+
+        input.value = "";
+
+        input.focus();
+
+        window.scrollTo({
+            top: 180,
+            behavior: "smooth"
+        });
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
