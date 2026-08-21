@@ -163,6 +163,18 @@ Phishing-Website-Detection-System/
 
 ## 📸 Screenshots
 
+### 🔍 URL Detection
+
+![PhishGuard URL Detection](https://github.com/skadesplaire01/PhishGuard-ML-Based-Phishing-URL-Detection-System/blob/main/URL%20DET.jpg?raw=true)
+
+### 🚨 Phishing Detection Result
+
+![PhishGuard Phishing Detection](https://github.com/skadesplaire01/PhishGuard-ML-Based-Phishing-URL-Detection-System/blob/main/2ND%20URL.jpg?raw=true)
+
+### 🛡️ Security Analysis
+
+![PhishGuard Security Analysis](https://github.com/skadesplaire01/PhishGuard-ML-Based-Phishing-URL-Detection-System/blob/main/3rd.jpg?raw=true)
+
 
 
 
