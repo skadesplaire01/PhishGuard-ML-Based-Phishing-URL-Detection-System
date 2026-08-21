@@ -77,3 +77,91 @@ URL Security Checks
 Risk Level + Security Signals
        ↓
 Explainable Result
+```
+
+## 🧠 ML Pipeline
+
+### Dataset
+
+The project uses a dataset containing **549,346 URLs**:
+
+- `392,924` Good URLs
+- `156,422` Bad URLs
+
+### Processing
+
+```text
+Raw URLs
+   ↓
+Tokenization
+   ↓
+Stemming
+   ↓
+Text Representation
+   ↓
+CountVectorizer
+   ↓
+Train/Test Split
+   ↓
+Logistic Regression
+   ↓
+Prediction
+```
+---
+
+## 🛠️ Tech Stack
+
+### Programming
+- Python
+
+### Machine Learning
+- Scikit-learn
+- Logistic Regression
+- Multinomial Naive Bayes
+- CountVectorizer
+
+### Data Processing
+- Pandas
+- NumPy
+- NLTK
+
+### Web Development
+- Flask
+- HTML
+- CSS
+- JavaScript
+
+### Deployment & Tools
+- Gunicorn
+- Render
+- Git
+- GitHub
+- VS Code
+
+---
+## 📁 Project Structure
+
+```text
+Phishing-Website-Detection-System/
+│
+├── Dataset/
+│   └── phishing_site_urls.csv
+│
+├── templates/
+│   └── index.html
+│
+├── app.py
+├── phishing.pkl
+├── phishing_mnb.pkl
+├── vectorizer.pkl
+├── requirements.txt
+│
+├── Phishing website detection system.ipynb
+└── word2vec.ipynb
+```
+
+
+
+
+
+
